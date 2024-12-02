@@ -5,6 +5,7 @@ import com.example.TodoList.repository.TodoRepository;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +17,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -62,6 +64,24 @@ public class TodoControllerTest {
                                 .build()
                 )
                 .isEqualTo(givenTodo);
+    }
+
+    @Test
+    void should_return_created_todo() throws Exception {
+        //Given
+        String givenText = "todo5";
+        boolean done = false;
+        String requestBody = "{\"text\": \"" + givenText + "\", \n\n\"done\": " + done + " }";
+        // When
+        // Then
+        client.perform(
+                        MockMvcRequestBuilders.post("/todo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.text").value(givenText))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.done").value(done));
     }
 
 }
