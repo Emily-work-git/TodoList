@@ -5,6 +5,7 @@ import com.example.TodoList.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.TodoList.exception.TodoNotFoundException;
 import java.util.List;
 
 @RestController
@@ -28,13 +29,13 @@ public class TodoController {
     }
 
     @PutMapping("/{id}")
-    public Todo updateTodo(@PathVariable Integer id, @RequestBody Todo todo){
+    public Todo updateTodo(@PathVariable Integer id, @RequestBody Todo todo) throws TodoNotFoundException {
         return todoService.update(id, todo);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTodo(@PathVariable Integer id){
+    public void deleteTodo(@PathVariable Integer id) throws TodoNotFoundException {
         todoService.delete(id);
     }
 }

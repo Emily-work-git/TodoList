@@ -3,7 +3,7 @@ package com.example.TodoList.service;
 import com.example.TodoList.model.Todo;
 import com.example.TodoList.repository.TodoRepository;
 import org.springframework.stereotype.Service;
-
+import com.example.TodoList.exception.TodoNotFoundException;
 import java.util.List;
 
 @Service
@@ -23,7 +23,10 @@ public class TodoService {
     }
 
     public Todo update(Integer id, Todo todo) {
-        return todoRepository.save(todo);
+        Todo toUpdateTodo = todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
+        toUpdateTodo.setText(todo.getText());
+        toUpdateTodo.setDone(todo.isDone());
+        return todoRepository.save(toUpdateTodo);
     }
 
     public void delete(Integer id) {
