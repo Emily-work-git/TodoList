@@ -10,16 +10,16 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String text;
     private boolean done;
 
-    public Todo(boolean done, String text) {
-        this.done = done;
-        this.text = text;
+    public Todo() {
     }
 
-    public Todo() {
-
+    public Todo(String text, boolean done) {
+        this.text = text;
+        this.done = done;
     }
 
     public Integer getId() {
@@ -45,5 +45,4 @@ public class Todo {
     public void setDone(boolean done) {
         this.done = done;
     }
-
 }
